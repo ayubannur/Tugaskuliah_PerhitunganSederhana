@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pattern Generator</title>
+</head>
+<body>
+    <h2>Pattern Generator</h2>
+    <label for="inputNumber">Masukkan angka:</label>
+    <input type="number" id="inputNumber" min="1">
+    <button onclick="displayPattern()">Generate Pattern</button>
+
+    <pre id="patternOutput"></pre>
+
+    <script>
+        function generatePattern(n) {
+            let pattern = "";
+
+            for (let i = 1; i <= n; i++) {
+                let row = "";
+                for (let j = 1; j <= n; j++) {
+                    if (j <= i) {
+                        row += j + " ";
+                    } else {
+                        row += "0 ";
+                    }
+                }
+                pattern += row.trim() + "\n"; 
+            }
+
+            return pattern;
+        }
+
+        function displayPattern() {
+            const inputNumber = document.getElementById("inputNumber").value;
+            const output = generatePattern(parseInt(inputNumber));
+            document.getElementById("patternOutput").textContent = output;
+        }
+    </script>
+</body>
+</html>

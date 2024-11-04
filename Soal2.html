@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perhitungan Sederhana</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', 'Arial', sans-serif;
+            background: linear-gradient(135deg, #ffecd2, #251282, #1f3e9a);
+            color: #555;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            animation: changeBg 10s infinite;
+            background-size: 400% 400%;
+        }
+
+        @keyframes changeBg {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        .container:hover {
+            transform: scale(1.03);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        h2 {
+            color: #344571;
+            font-size: 32px;
+            margin-bottom: 25px;
+            font-weight: bold;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 20px;
+            color: #344571;
+            font-size: 18px;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 15px;
+            margin-top: 8px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 18px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="number"]:focus {
+            border-color: #344571;
+            outline: none;
+            box-shadow: 0 0 10px rgba(255, 127, 80, 0.2);
+        }
+
+        button {
+            background-color: #344571;
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 10px;
+            font-size: 18px;
+            cursor: pointer;
+            margin-top: 12px;
+            margin-right: 5px;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        button:hover {
+            background-color: #ff6347;
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .output {
+            background-color: #f0f8ff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            color: #333;
+            font-weight: bold;
+            font-size: 20px;
+            display: none;
+        }
+
+        .loading-spinner {
+            display: none;
+            font-size: 24px;
+            color: #ff7f50;
+            margin-top: 15px;
+        }
+
+        .logo {
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background-color: #ffffff;
+        }
+
+        .logo img {
+            width: 80%;
+            height: 80%;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <img src="https://w7.pngwing.com/pngs/601/342/png-transparent-untag-surabaya-logo-thumbnail.png" alt="logo">
+        </div>
+        <h2>Program Perhitungan Sederhana</h2>
+        <label for="start">Nilai Awal:</label>
+        <input type="number" id="start" min="1">
+        <label for="end">Nilai Akhir:</label>
+        <input type="number" id="end" min="1">
+
+        <div>
+            <button onclick="calculateAndDisplay('total')">Total</button>
+            <button onclick="calculateAndDisplay('average')">Rata-rata</button>
+            <button onclick="calculateAndDisplay('factorial')">Faktorial</button>
+            <button onclick="calculateAndDisplay('oddSum')">Jumlah Ganjil</button>
+            <button onclick="calculateAndDisplay('evenSum')">Jumlah Genap</button>
+            <button onclick="calculateAndDisplay('squareSum')">Jumlah Kuadrat</button>
+        </div>
+
+        <div class="loading-spinner" id="loadingSpinner">⏳ Menghitung...</div>
+        <div class="output" id="outputDisplay"></div>
+    </div>
+
+    <script>
+        function calculateAndDisplay(operation) {
+            const start = parseInt(document.getElementById("start").value);
+            const end = parseInt(document.getElementById("end").value);
+            const outputDisplay = document.getElementById("outputDisplay");
+            const loadingSpinner = document.getElementById("loadingSpinner");
+
+            if (isNaN(start) || isNaN(end)) {
+                outputDisplay.style.display = 'block';
+                outputDisplay.textContent = "Silakan masukkan kedua nilai!";
+                return;
+            }
+
+            loadingSpinner.style.display = 'block';
+            outputDisplay.style.display = 'none';
+
+            setTimeout(() => {
+                let result;
+                switch(operation) {
+                    case 'total':
+                        result = calculateTotal(start, end);
+                        break;
+                    case 'average':
+                        result = calculateAverage(start, end);
+                        break;
+                    case 'factorial':
+                        result = calculateFactorial(start, end);
+                        break;
+                    case 'oddSum':
+                        result = calculateOddSum(start, end);
+                        break;
+                    case 'evenSum':
+                        result = calculateEvenSum(start, end);
+                        break;
+                    case 'squareSum':
+                        result = calculateSquareSum(start, end);
+                        break;
+                }
+
+                loadingSpinner.style.display = 'none';
+                outputDisplay.textContent = result;
+                outputDisplay.style.display = 'block';
+            }, 1000);
+        }
+
+        function calculateTotal(start, end) {
+            let total = 0;
+            for (let i = start; i <= end; i++) {
+                total += i;
+            }
+            return "Total: " + total;
+        }
+
+        function calculateAverage(start, end) {
+            let total = 0;
+            const count = end - start + 1;
+            for (let i = start; i <= end; i++) {
+                total += i;
+            }
+            const average = total / count;
+            return "Rata-rata: " + average.toFixed(2);
+        }
+
+        function calculateFactorial(start, end) {
+            let factorial = 1;
+            for (let i = start; i <= end; i++) {
+                factorial *= i;
+            }
+            return "Faktorial: " + factorial;
+        }
+
+        function calculateOddSum(start, end) {
+            let oddSum = 0;
+            for (let i = start; i <= end; i++) {
+                if (i % 2 !== 0) oddSum += i;
+            }
+            return "Jumlah Angka Ganjil: " + oddSum;
+        }
+
+        function calculateEvenSum(start, end) {
+            let evenSum = 0;
+            for (let i = start; i <= end; i++) {
+                if (i % 2 === 0) evenSum += i;
+            }
+            return "Jumlah Angka Genap: " + evenSum;
+        }
+
+        function calculateSquareSum(start, end) {
+            let squareSum = 0;
+            for (let i = start; i <= end; i++) {
+                squareSum += i * i;
+            }
+            return "Jumlah Kuadrat: " + squareSum;
+        }
+    </script>
+</body>
+</html>
